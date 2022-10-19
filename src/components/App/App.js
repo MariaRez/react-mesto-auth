@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import { api } from "../../utils/Api";
-import auth from "../../auth"; //проверить нужна ли деструкторизация
+import auth from "../../utils/auth"; //проверить нужна ли деструкторизация
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Header from "../Header/Header";
@@ -138,12 +138,17 @@ function App() {
           <Header />
           <Switch>
            <Route path="/sign-in">
-            <Login />
+            <Login 
+            title="Вход" 
+            buttonText="Войти"/>
            </Route>
            <Route path="/sign-up">
-            <Register />
+            <Register 
+            title="Регистация" 
+            buttonText="Зарегистироваться"/>
            </Route>
-           <Main
+           <ProtectedRoute
+            path="/"
             onEditAvatar={handleEditAvatarClick}
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
@@ -151,6 +156,7 @@ function App() {
             cards={cards}
             onCardLike={handleCardLike}
             onCardDelete={handleCardDelete}
+            component={Main}
            />
           </Switch>
           <Footer />

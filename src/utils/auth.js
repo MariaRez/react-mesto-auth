@@ -4,15 +4,12 @@ class Auth {
       this._headers = headers;
     }
   
-    register(data) {
+    register(email, password) {
       //регистрация нового пользователя
       return fetch(`${this._baseUrl}/signup`, {
         method: "POST",
         headers: this._headers,
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-        }),
+        body: JSON.stringify({email, password}),
       })
         .then((res) => {
           try {
@@ -37,15 +34,12 @@ class Auth {
         .catch((err) => console.log(err));
     }
   
-    authorize(data) {
+    authorize(email, password) {
       //вход зарегистрированового пользователя
       return fetch(`${this._baseUrl}/signin`, {
         method: "POST",
         headers: this._headers,
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-        }),
+        body: JSON.stringify({email, password}),
       })
         .then((res) => {
           try {

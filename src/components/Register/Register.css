@@ -3,3 +3,5 @@
 @import url(../../blocks/form/form.css);
 @import url(../../blocks/form/__field/form__field.css);
 @import url(../../blocks/form/__button/form__button.css);
+@import url(../../blocks/register/__signin/register__signin.css);
+@import url(../../blocks/signin/__link/signin__link.css);

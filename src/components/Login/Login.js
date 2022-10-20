@@ -16,12 +16,11 @@ function Login(props) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    auth
-      .authorize(email, password)
-      .then ///написать
-      .catch((err) => {
-        console.log(err);
-      });
+    auth. authorize(email, password)
+    .then(res => props.handleRegister(res, email))
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   return (

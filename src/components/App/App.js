@@ -14,12 +14,15 @@ import PopupWithForm from "../PopupWithForm/PopupWithForm";
 import EditProfilePopup from "../EditProfilePopup/EditProfilePopup";
 import EditAvatarPopup from "../EditAvatarPopup/EditAvatarPopup";
 import AddPlacePopup from "../AddPlacePopup/AddPlacePopup";
+import InfoTooltip from "../InfoTooltip/InfoTooltip";
 
 function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] =
     React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
+  const [isTooltipPopupOpen, setTooltipPopupOpen] = useState(false);
+  const [status, setStatus] = useState("");
   const [selectedCard, setSelectedCard] = React.useState({});
   const [currentUser, setCurrentUser] = useState({
     name: "",
@@ -105,6 +108,7 @@ function App() {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
+    setTooltipPopupOpen(false);
     setSelectedCard({});
   }
 
@@ -131,6 +135,14 @@ function App() {
       });
   }
 
+  function handleLoginSubmit() {
+
+  }
+
+  function handleRegisterSubmit() {
+    
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="body">
@@ -140,12 +152,16 @@ function App() {
            <Route path="/sign-in">
             <Login 
             title="Вход" 
-            buttonText="Войти"/>
+            buttonText="Войти"
+            handleLogin={handleLoginSubmit}
+            />
            </Route>
            <Route path="/sign-up">
             <Register 
             title="Регистация" 
-            buttonText="Зарегистироваться"/>
+            buttonText="Зарегистироваться"
+            handleRegister={handleRegisterSubmit}
+            />
            </Route>
            <ProtectedRoute
             path="/"
@@ -180,7 +196,15 @@ function App() {
             title="Вы уверены?"
             buttonText="Да"
           ></PopupWithForm>
-          <ImagePopup onClose={closeAllPopups} card={selectedCard} />
+          <ImagePopup 
+            onClose={closeAllPopups} 
+            card={selectedCard} 
+            />
+          <InfoTooltip
+          isOpen={isTooltipPopupOpen}
+          onClose={closeAllPopups}
+          status={status}
+          />
         </div>
       </div>
     </CurrentUserContext.Provider>

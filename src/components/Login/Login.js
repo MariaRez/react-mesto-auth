@@ -17,7 +17,7 @@ function Login(props) {
   function handleSubmit(evt) {
     evt.preventDefault();
     auth. authorize(email, password)
-    .then(res => props.handleRegister(res, email))
+    .then(res => props.handleLogin(res, email))
     .catch((err) => {
       console.log(err);
     })

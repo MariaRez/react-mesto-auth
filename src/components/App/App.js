@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import { api } from "../../utils/Api";
 import auth from "../../utils/auth"; //проверить нужна ли деструкторизация
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
@@ -22,6 +22,8 @@ function App() {
     React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const [isTooltipPopupOpen, setTooltipPopupOpen] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const history = useHistory;
   const [status, setStatus] = useState("");
   const [selectedCard, setSelectedCard] = React.useState({});
   const [currentUser, setCurrentUser] = useState({
@@ -51,6 +53,22 @@ function App() {
         console.log(err);
       });
   }, []);
+
+  React.useEffect(() => {
+    checkToken();
+  }, []);
+
+
+  function checkToken() {
+    if (localStorage.getItem('token')) {
+      auth.checkToken(localStorage.getItem('token'))
+        .then(res => {
+          const {_id, email} = res.data;
+          setLoggedIn(true);
+          history.push("/");
+        })
+    }
+  }
 
   function handleUpdateAvatar(avatar) {
     api
@@ -135,12 +153,30 @@ function App() {
       });
   }
 
-  function handleLoginSubmit() {
-
+  function handleLoginSubmit(res) { ///// некорректно работает - исправить
+    if (res.token) {
+      localStorage.setItem('token', res.token);
+      setLoggedIn(true);
+      history.push("/");
+    }
+    else {
+      console.log(res);
+    }
   }
 
-  function handleRegisterSubmit() {
-    
+  function handleRegisterSubmit(res) { ////// некорректно работает - исправить
+    if (res.data) {
+      setStatus("success");
+      setTooltipPopupOpen(true);
+      setTimeout(() => {
+        setTooltipPopupOpen(false);
+        history.push("/sign-in");
+      }, 1500);
+    }
+    else {
+      setStatus("wrong");
+      setTooltipPopupOpen(true);
+    }        
   }
 
   return (

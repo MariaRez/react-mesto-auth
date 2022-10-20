@@ -9,10 +9,10 @@ function InfoTooltip(props) {
     ? "Вы успешно зарегистрировались!"
     : "Что-то пошло не так! Попробуйте еще раз.";
     return (
-        <div className={props.isOpen ? "popup popup_opened" : "popup"}>
-            <div className="popup__container">
-                <img className="popup__image" src={image} alt={text}/>
-                <h3 className="popup__title">{text}</h3>
+        <div className={`popup` + (props.isOpen ? " popup_opened" : "")}>
+            <div className="popup__status-container">
+                <img className="popup__status-image" src={image} alt={text}/>
+                <h3 className="popup__status-title">{text}</h3>
                 <button
                 aria-label="Close"
                 className="popup__close-button popup__close-button_place_image"

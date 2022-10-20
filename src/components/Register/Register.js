@@ -18,7 +18,7 @@ function Register(props) {
   function handleSubmit(evt) {
     evt.preventDefault();
     auth.register(email, password)
-    .then(res => props.handleLogin(res))
+    .then(res => props.handleRegister(res))
     .catch((err) => {
       console.log(err);
     })

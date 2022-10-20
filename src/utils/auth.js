@@ -71,7 +71,7 @@ class Auth {
         },
       })
         .then((res) => res.json())
-        .then((data) => data);
+        .catch((err) => console.log(err));
     }
   }
   

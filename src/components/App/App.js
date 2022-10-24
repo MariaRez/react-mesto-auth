@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
 import { api } from "../../utils/Api";
-import auth from "../../utils/auth"; //проверить нужна ли деструкторизация
+import auth from "../../utils/auth";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Header from "../Header/Header";
@@ -23,7 +23,7 @@ function App() {
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const [isTooltipPopupOpen, setTooltipPopupOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
-  const history = useHistory;
+  const history = useHistory();
   const [status, setStatus] = useState("");
   const [selectedCard, setSelectedCard] = React.useState({});
   const [currentUser, setCurrentUser] = useState({
@@ -34,7 +34,7 @@ function App() {
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
-    api
+    api 
       .getUserInfo()
       .then((userInfo) => {
         setCurrentUser(userInfo);
@@ -201,6 +201,7 @@ function App() {
            </Route>
            <ProtectedRoute
             path="/"
+            loggedIn={loggedIn}
             onEditAvatar={handleEditAvatarClick}
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}

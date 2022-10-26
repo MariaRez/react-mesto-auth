@@ -1,5 +1,5 @@
 import React from "react";
-import auth from "../../utils/auth";
+import { auth } from "../../utils/auth";
 import "./Login.css";
 
 function Login(props) {
@@ -16,7 +16,8 @@ function Login(props) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    auth. authorize(email, password)
+    auth
+    .authorize(email, password)
     .then(res => props.handleLogin(res, email))
     .catch((err) => {
       console.log(err);

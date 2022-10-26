@@ -66,7 +66,7 @@ class Api {
           headers: this._headers,
         })
         .then(res => this._сheckServerResponseStatus(res))
-      };
+    };
 
     editAvatar(avatar){
         return fetch(`${this._baseUrl}/users/me/avatar`, {

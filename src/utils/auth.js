@@ -9,7 +9,10 @@ class Auth {
       return fetch(`${this._baseUrl}/signup`, {
         method: "POST",
         headers: this._headers,
-        body: JSON.stringify({email, password}),
+        body: JSON.stringify({
+          password: `${password}`,
+          email: `${email}`
+        })
       })
         .then((res) => {
           try {
@@ -39,7 +42,10 @@ class Auth {
       return fetch(`${this._baseUrl}/signin`, {
         method: "POST",
         headers: this._headers,
-        body: JSON.stringify({email, password}),
+        body: JSON.stringify({
+          password: `${password}`,
+          email: `${email}`
+        })
       })
         .then((res) => {
           try {
@@ -73,13 +79,12 @@ class Auth {
         .then((res) => res.json())
         .catch((err) => console.log(err));
     }
-  }
-  
-  const auth = new Auth({
+}
+
+
+  export const auth = new Auth({
     baseUrl: "https://auth.nomoreparties.co",
     headers: {
       "Content-Type": "application/json",
     },
   });
-  
-  export default auth;  

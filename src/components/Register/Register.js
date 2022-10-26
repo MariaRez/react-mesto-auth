@@ -1,5 +1,5 @@
 import React from "react";
-import auth from "../../utils/auth";
+import { auth } from "../../utils/auth";
 import "./Register.css";
 import { Link } from 'react-router-dom';
 
@@ -17,7 +17,8 @@ function Register(props) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    auth.register(email, password)
+    auth
+    .register(email, password)
     .then(res => props.handleRegister(res))
     .catch((err) => {
       console.log(err);

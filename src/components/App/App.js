@@ -17,12 +17,13 @@ import AddPlacePopup from "../AddPlacePopup/AddPlacePopup";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
 
 function App() {
-  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
-  const [isEditProfilePopupOpen, setEditProfilePopupOpen] =
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
     React.useState(false);
-  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
+    React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
 
-  const [isTooltipPopupOpen, setTooltipPopupOpen] = useState(false);
+  const [isTooltipPopupOpen, setIsTooltipPopupOpen] = useState(false);
   const history = useHistory();
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
@@ -37,9 +38,10 @@ function App() {
   });
 
   function checkToken() {
-    if (localStorage.getItem("token")) {
+    const token = localStorage.getItem("token");
+    if (token) {
       auth
-        .checkToken(localStorage.getItem("token"))
+        .checkToken(token)
         .then((res) => {
           const { _id, email } = res.data;
           setLoggedIn(true);
@@ -53,20 +55,10 @@ function App() {
   }
 
   React.useEffect(() => {
-    api
-      .getUserInfo()
-      .then((userInfo) => {
-        setCurrentUser(userInfo);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  React.useEffect(() => {
-    Promise.all([api.getInitialCards()])
-      .then(([initialCards]) => {
+    Promise.all([api.getInitialCards(), api.getUserInfo()])
+      .then(([initialCards, userInfo]) => {
         setCards(initialCards);
+        setCurrentUser(userInfo);
       })
       .catch((err) => {
         console.log(err);
@@ -82,7 +74,7 @@ function App() {
       .editAvatar(avatar)
       .then((userAvatar) => {
         setCurrentUser(userAvatar);
-        setEditAvatarPopupOpen(false);
+        setIsEditAvatarPopupOpen(false);
       })
       .catch((err) => {
         console.log(err);
@@ -94,7 +86,7 @@ function App() {
       .editProfile(data)
       .then((userData) => {
         setCurrentUser(userData);
-        setEditProfilePopupOpen(false);
+        setIsEditProfilePopupOpen(false);
       })
       .catch((err) => {
         console.log(err);
@@ -106,7 +98,7 @@ function App() {
       .addNewCard(data)
       .then((newCard) => {
         setCards([newCard, ...cards]);
-        setAddPlacePopupOpen(false);
+        setIsAddPlacePopupOpen(false);
       })
       .catch((err) => {
         console.log(err);
@@ -115,25 +107,25 @@ function App() {
 
   function handleEditAvatarClick() {
     console.log("Открыли попап для изменения аватара");
-    setEditAvatarPopupOpen(true);
+    setIsEditAvatarPopupOpen(true);
   }
   function handleEditProfileClick() {
     console.log("Открыли попап для изменения профиля");
-    setEditProfilePopupOpen(true);
+    setIsEditProfilePopupOpen(true);
   }
   function handleAddPlaceClick() {
     console.log("Открыли попап для добавления новой карточки");
-    setAddPlacePopupOpen(true);
+    setIsAddPlacePopupOpen(true);
   }
   function handleCardClick(card) {
     console.log("Открыли попап большой картинки");
     setSelectedCard(card);
   }
   function closeAllPopups() {
-    setEditAvatarPopupOpen(false);
-    setEditProfilePopupOpen(false);
-    setAddPlacePopupOpen(false);
-    setTooltipPopupOpen(false);
+    setIsEditAvatarPopupOpen(false);
+    setIsEditProfilePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
+    setIsTooltipPopupOpen(false);
     setSelectedCard({});
   }
 
@@ -171,7 +163,7 @@ function App() {
       history.push("/");
     } else {
       setStatus("wrong");
-      setTooltipPopupOpen(true);
+      setIsTooltipPopupOpen(true);
       console.log("Проблема с авторизацией пользователя");
     }
   }
@@ -179,15 +171,15 @@ function App() {
   function handleRegisterSubmit(res) {
     if (res.data) {
       setStatus("success");
-      setTooltipPopupOpen(true);
+      setIsTooltipPopupOpen(true);
       setTimeout(() => {
-        setTooltipPopupOpen(false);
+        setIsTooltipPopupOpen(false);
         history.push("/sign-in");
         setStatus("success");
       }, 1500);
     } else {
       setStatus("wrong");
-      setTooltipPopupOpen(true);
+      setIsTooltipPopupOpen(true);
       console.log("Проблема с регистрацией пользователя");
     }
   }

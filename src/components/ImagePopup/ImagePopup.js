@@ -1,9 +1,17 @@
 function ImagePopup(props) {
-
   return (
-    <div className={`popup popup_place_image` + (Object.keys(props.card).length ? " popup_opened" : "")}>
+    <div
+      className={
+        `popup popup_place_image` +
+        (Object.keys(props.card).length ? " popup_opened" : "")
+      }
+    >
       <div className="popup__image-container">
-        <img className="popup__image" src={props.card.link} alt={props.card.name}/>
+        <img
+          className="popup__image"
+          src={props.card.link}
+          alt={props.card.name}
+        />
         <h4 className="popup__text">{props.card.name}</h4>
         <button
           aria-label="Close"
@@ -17,4 +25,3 @@ function ImagePopup(props) {
 }
 
 export default ImagePopup;
-

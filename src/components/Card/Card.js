@@ -25,34 +25,32 @@ function Card(props) {
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <div className="element">
-        <img
-          className="element__image"
-          onClick={handleClick}
-          src={props.card.link}
-          alt={props.card.name}
-        />
-        <button
-          aria-label="Delete card"
-          className={cardDeleteButtonClassName}
-          type="button"
-          onClick={handleDeleteClick}
-        ></button>
-        <div className="element__rectangle">
-          <h3 className="element__text">{props.card.name}</h3>
-          <div className="element__like-zone">
-            <button
-              aria-label="Like card"
-              className={cardLikeButtonClassName}
-              type="button"
-              onClick={handleLikeClick}
-            ></button>
-            <p className="element__like-counter">{props.card.likes.length}</p>
-          </div>
+    <div className="element">
+      <img
+        className="element__image"
+        onClick={handleClick}
+        src={props.card.link}
+        alt={props.card.name}
+      />
+      <button
+        aria-label="Delete card"
+        className={cardDeleteButtonClassName}
+        type="button"
+        onClick={handleDeleteClick}
+      />
+      <div className="element__rectangle">
+        <h3 className="element__text">{props.card.name}</h3>
+        <div className="element__like-zone">
+          <button
+            aria-label="Like card"
+            className={cardLikeButtonClassName}
+            type="button"
+            onClick={handleLikeClick}
+          />
+          <p className="element__like-counter">{props.card.likes.length}</p>
         </div>
       </div>
-    </CurrentUserContext.Provider>
+    </div>
   );
 }
 

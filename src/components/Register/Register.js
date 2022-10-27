@@ -1,7 +1,7 @@
 import React from "react";
 import { auth } from "../../utils/auth";
 import "./Register.css";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 function Register(props) {
   const [email, setEmail] = React.useState("");
@@ -18,11 +18,11 @@ function Register(props) {
   function handleSubmit(evt) {
     evt.preventDefault();
     auth
-    .register(email, password)
-    .then(res => props.handleRegister(res))
-    .catch((err) => {
-      console.log(err);
-    })
+      .register(email, password)
+      .then((res) => props.handleRegister(res))
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
@@ -62,8 +62,10 @@ function Register(props) {
         </button>
       </form>
       <div className="register__signin">
-         <p className="">Уже зарегистрированы?</p>
-         <Link to="/sign-in" className="signin__link">Войти</Link>
+        <p className="">Уже зарегистрированы?</p>
+        <Link to="/sign-in" className="signin__link">
+          Войти
+        </Link>
       </div>
     </div>
   );

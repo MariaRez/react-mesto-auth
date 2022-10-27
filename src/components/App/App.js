@@ -16,6 +16,9 @@ import EditAvatarPopup from "../EditAvatarPopup/EditAvatarPopup";
 import AddPlacePopup from "../AddPlacePopup/AddPlacePopup";
 import InfoTooltip from "../InfoTooltip/InfoTooltip";
 
+import success from "../../images/yes.svg";
+import wrong from "../../images/no.svg";
+
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
     React.useState(false);
@@ -24,10 +27,12 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
 
   const [isTooltipPopupOpen, setIsTooltipPopupOpen] = useState(false);
+  const [imageForTooltipPopup, setImageForTooltipPopup] = useState("");
+  const [textForTooltipPopup, setTextForTooltipPopup] = useState("");
+
   const history = useHistory();
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState("");
 
   const [selectedCard, setSelectedCard] = React.useState({});
   const [cards, setCards] = React.useState([]);
@@ -154,34 +159,39 @@ function App() {
       });
   }
 
-  function handleLoginSubmit(res, email) {
-    if (res.token) {
-      setStatus("success");
-      localStorage.setItem("token", res.token);
-      setEmail(email);
-      setLoggedIn(true);
-      history.push("/");
-    } else {
-      setStatus("wrong");
-      setIsTooltipPopupOpen(true);
-      console.log("Проблема с авторизацией пользователя");
-    }
+  function handleLoginSubmit(email, password) {
+    auth
+      .authorize(email, password)
+      .then((res) => {
+        localStorage.setItem("token", res.token);
+        setEmail(email);
+        setLoggedIn(true);
+        history.push("/");
+      })
+      .catch(() => {
+        setImageForTooltipPopup(wrong);
+        setTextForTooltipPopup("Что-то пошло не так! Попробуйте еще раз.");
+        setIsTooltipPopupOpen(true);
+      });
   }
 
-  function handleRegisterSubmit(res) {
-    if (res.data) {
-      setStatus("success");
-      setIsTooltipPopupOpen(true);
-      setTimeout(() => {
-        setIsTooltipPopupOpen(false);
-        history.push("/sign-in");
-        setStatus("success");
-      }, 1500);
-    } else {
-      setStatus("wrong");
-      setIsTooltipPopupOpen(true);
-      console.log("Проблема с регистрацией пользователя");
-    }
+  function handleRegisterSubmit(email, password) {
+    auth
+      .register(email, password)
+      .then(() => {
+        setIsTooltipPopupOpen(true);
+        setImageForTooltipPopup(success);
+        setTextForTooltipPopup("Вы успешно зарегистрировались!");
+        setTimeout(() => {
+          setIsTooltipPopupOpen(false);
+          history.push("/sign-in");
+        }, 1500);
+      })
+      .catch(() => {
+        setImageForTooltipPopup(wrong);
+        setTextForTooltipPopup("Что-то пошло не так! Попробуйте еще раз.");
+        setIsTooltipPopupOpen(true);
+      });
   }
 
   return (
@@ -243,7 +253,8 @@ function App() {
           <InfoTooltip
             isOpen={isTooltipPopupOpen}
             onClose={closeAllPopups}
-            status={status}
+            image={imageForTooltipPopup}
+            text={textForTooltipPopup}
           />
         </div>
       </div>

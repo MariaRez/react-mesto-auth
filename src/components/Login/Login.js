@@ -1,8 +1,7 @@
 import React from "react";
-import { auth } from "../../utils/auth";
 import "./Login.css";
 
-function Login(props) {
+function Login({ handleLogin, title, buttonText }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -16,17 +15,12 @@ function Login(props) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    auth
-      .authorize(email, password)
-      .then((res) => props.handleLogin(res, email))
-      .catch((err) => {
-        console.log(err);
-      });
+    handleLogin(email, password);
   }
 
   return (
     <div className="login">
-      <h3 className="login__title">{props.title}</h3>
+      <h3 className="login__title">{title}</h3>
       <form
         name="login"
         className="form form_place_login"
@@ -57,7 +51,7 @@ function Login(props) {
           onChange={handleLoginPassword}
         />
         <button className="form__button" type="submit">
-          {props.buttonText}
+          {buttonText}
         </button>
       </form>
     </div>
